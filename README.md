@@ -78,3 +78,9 @@ sudo systemctl stop prosody jitsi-videobridge2 jicofo
 
 **9. Enjoy**
 
+*Fuentes:
+Deshabilitar ZRAM https://github.com/MichaIng/DietPi/issues/2738
+Instalar Jitsi en Ubuntu 20.04 https://www.vultr.com/docs/install-jitsi-meet-on-ubuntu-20-04-lts
+Instalar repositorios de adoptopenjdk https://adoptopenjdk.net/installation.html?variant=openjdk8&jvmVariant=hotspot
+Instalar Jitsi en plataformas arm https://github.com/jitsi/jitsi-meet/issues/6449
+Errores de certificados de Prosody https://github.com/jitsi/jitsi-meet/issues/2117*
