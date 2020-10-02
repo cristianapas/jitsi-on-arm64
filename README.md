@@ -41,7 +41,7 @@ sudo /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
 sudo systemctl stop prosody jitsi-videobridge2 jicofo
 ```
 
-**6. Compilar jniwrapper-native para la plataforma arm**
+**6. Compilar libjnisctp para la plataforma arm**
 
 ```bash
 sudo apt install automake autoconf build-essential libtool git maven m4
