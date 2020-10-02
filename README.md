@@ -57,11 +57,18 @@ sudo cp ./jniwrapper/native/target/jniwrapper-native-1.0-SNAPSHOT.jar \
  $(ls /usr/share/jitsi-videobridge/lib/jniwrapper-native-*)
 ```
 
-**7. Cambiar certificados prosody?**
+**7. Solucionar errores de certificado de Jicofo y Videobridge contra Prosody**
 
-The errors you see are from jicofo and videobridge attempting to connect to prosody, not nginx. 
-You can either configure prosody with a valid certificate for the domains it serves, or disable certificate verification. For jicofo you can set     `org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true`,
-and for the bridge you can set `org.jitsi.videobridge.xmpp.user.SHARD.DISABLE_CERTIFICATE_VERIFICATION=true` (replacing SHARD with the name you have for the rest of the properties for the client connection).
+Editar /etc/jitsi/jicofo/sip-communicator.properties y agregar `org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true`
+
+```bash
+sudo nano /etc/jitsi/jicofo/sip-communicator.properties
+```
+luego editar /etc/jitsi/videobridge/sip-communicator.properties y agregar `org.jitsi.videobridge.xmpp.user.SHARD.DISABLE_CERTIFICATE_VERIFICATION=true`
+
+```bash
+sudo nano /etc/jitsi/videobridge/sip-communicator.properties
+```
 
 **8. Reiniciar los servicios**
 
@@ -71,7 +78,3 @@ sudo systemctl stop prosody jitsi-videobridge2 jicofo
 
 **9. Enjoy**
 
-sudo cp ./jniwrapper/native/target/jniwrapper-native-1.0-SNAPSHOT.jar \
- /usr/share/jitsi-videobridge/lib/jniwrapper-native-1.0-SNAPSHOT.jar
- 
-cp ./jniwrapper/native/target/jniwrapper-native-1.0-SNAPSHOT.jar $(ls /usr/share/jitsi-videobridge/lib/jniwrapper-native-*)
