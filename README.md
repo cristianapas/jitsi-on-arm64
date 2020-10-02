@@ -1,5 +1,6 @@
 # jitsi-on-arm64
 Instrucciones para instalar Jitsi-Meet en Armbian 20.08
+
 **1. Deshabilitar zram**
 
 ```bash
