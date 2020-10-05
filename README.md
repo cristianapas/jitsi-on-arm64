@@ -1,7 +1,8 @@
 # jitsi-on-arm64
-Instrucciones para instalar Jitsi-Meet en Armbian 20.08
+Después de haber probado instalar Jitsi-Meet en Ubuntu en una PC, decidí desempolvar mi vieja Renegade (https://libre.computer/products/boards/roc-rk3328-cc/) esperando que fuese igual de simple la instalación. Al falta de un Ubuntu mas actual (la última que viene oficial es 18.04) decidí usar la última versión de Armbian disponible, después de bastantes intentos fallidos y buscar en muchos sitios, logre hacerlo funcionar y armé esta guía. La Renegade es una placa SBC de formato compatible con Raspberry PI, procesador Rockchip RK3328 de arquitectura Arm Cortex-A53 de 64 bits y en este caso 4GB de RAM.
 
 **1. Deshabilitar zram**
+Este primer paso se debe a que por default armbian arma una partición de swap utilizando zram, que obviamente consume memoria y le resta para utilizarla por la JavaVM
 
 ```bash
 swapoff -a
@@ -11,7 +12,13 @@ systemctl disable armbian-ramlog.service
 
 **2. Setear /etc/hosts agregando el fqdn y el hostame con el ip**
 
+Al estar en este caso el host detrás de un NAT, debemos agregar el fqdn del al archivo hosts utilizando el ip interno, por ejemplo:
+
+    192.168.0.10 	jitsionamd.prueba.com jitsionamd
+
 **3. Instalar JavaVM (adoptopenjdk) y setear entorno**
+Despues de luchar varias veces con el jre y jdk 11 que trae por default de armbian 20.08 busqué alguna implementación estable de Java 8 que tenga soporte y repositorios de fácil instalación y así terminé dando con el proyecto AdoptOpenJDK https://adoptopenjdk.net/
+
 
 ```bash
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
@@ -78,9 +85,13 @@ sudo systemctl stop prosody jitsi-videobridge2 jicofo
 
 **9. Enjoy**
 
-*Fuentes:*
-*Deshabilitar ZRAM https://github.com/MichaIng/DietPi/issues/2738 *
-*Instalar Jitsi en Ubuntu 20.04 https://www.vultr.com/docs/install-jitsi-meet-on-ubuntu-20-04-lts *
-*Instalar repositorios de adoptopenjdk https://adoptopenjdk.net/installation.html?variant=openjdk8&jvmVariant=hotspot *
-*Instalar Jitsi en plataformas arm https://github.com/jitsi/jitsi-meet/issues/6449 *
-*Errores de certificados de Prosody https://github.com/jitsi/jitsi-meet/issues/2117 *
+Fuentes:
+*Deshabilitar ZRAM https://github.com/MichaIng/DietPi/issues/2738*
+
+*Instalar Jitsi en Ubuntu 20.04 https://www.vultr.com/docs/install-jitsi-meet-on-ubuntu-20-04-lts*
+
+*Instalar repositorios de adoptopenjdk https://adoptopenjdk.net/installation.html?variant=openjdk8&jvmVariant=hotspot*
+
+*Instalar Jitsi en plataformas arm https://github.com/jitsi/jitsi-meet/issues/6449*
+
+*Errores de certificados de Prosody https://github.com/jitsi/jitsi-meet/issues/2117*
