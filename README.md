@@ -89,7 +89,7 @@ sudo nano /etc/jitsi/videobridge/sip-communicator.properties
 **8. Reiniciar los servicios**
 
 ```bash
-sudo systemctl stop prosody jitsi-videobridge2 jicofo
+sudo systemctl start prosody jitsi-videobridge2 jicofo
 ```
 
 **9. Enjoy**
