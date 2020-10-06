@@ -14,7 +14,7 @@ systemctl disable armbian-ramlog.service
 
 Al estar en este caso el host detrás de un NAT, debemos agregar el fqdn del al archivo hosts utilizando el ip interno, por ejemplo:
 
-    192.168.0.10 	jitsionamd.prueba.com jitsionamd
+    192.168.0.10 	jitsionarm.prueba.com jitsionarm
 
 **3. Instalar JavaVM (adoptopenjdk) y setear entorno**
 
