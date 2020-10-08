@@ -1,7 +1,11 @@
 # jitsi-on-arm64
 Después de haber probado instalar Jitsi-Meet en Ubuntu en una PC, decidí desempolvar mi vieja Renegade (https://libre.computer/products/boards/roc-rk3328-cc/) esperando que fuese igual de simple la instalación. Al falta de un Ubuntu mas actual (la última que viene oficial es 18.04) decidí usar la última versión de Armbian disponible, después de bastantes intentos fallidos y buscar en muchos sitios, logre hacerlo funcionar y armé esta guía. La Renegade es una placa SBC de formato compatible con Raspberry PI, procesador Rockchip RK3328 de arquitectura Arm Cortex-A53 de 64 bits y en este caso 4GB de RAM, por lo que supongo que esta guía debe funcionar en cualquier distribución de paquetes deb con hardware arm64 tipo RPi4, ODroid o Thinkerboard.
 
+*Update* Agregué los cambios para instalar Jitsi-Meet en una Raspberry Pi4 usando Ubuntu Server 20.04
+
 **1. Deshabilitar zram**
+*Pasar de largo para Raspberry Pi*
+
 Este primer paso se debe a que por default armbian arma una partición de swap utilizando zram, que obviamente consume memoria y le resta para utilizarla por la JavaVM
 
 ```bash
@@ -25,6 +29,13 @@ wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo 
 sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 sudo apt update -y
 apt install adoptopenjdk-8-hotspot -y
+echo "JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" | sudo tee -a /etc/profile
+source /etc/profile
+```
+En el caso del Ubuntu 20.04 en RPi4 es mucho mas sencillo ya que trae en su repositorios varias versiones de JDK
+
+```bash
+apt install openjdk-8-jdk-headless -y
 echo "JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" | sudo tee -a /etc/profile
 source /etc/profile
 ```
@@ -60,20 +71,22 @@ Este quizá es el punto mas complicado de la instalación, ya que el binario que
 
 ```bash
 sudo systemctl stop prosody jitsi-videobridge2 jicofo
-sudo apt install automake autoconf build-essential libtool git maven m4
+sudo apt install -y automake autoconf build-essential libtool git maven m4
 git clone https://github.com/sctplab/usrsctp.git
 git clone https://github.com/jitsi/jitsi-sctp
 mv ./usrsctp ./jitsi-sctp/usrsctp/
 cd ./jitsi-sctp
 mvn package -DbuildSctp -DbuildNativeWrapper -DdeployNewJnilib -DskipTests
-cp ./jniwrapper/native/target/libjnisctp-linux-arm.so \
- ./jniwrapper/native/src/main/resources/lib/linux/libjnisctp.so
+cp $(ls ./jniwrapper/native/target/libjnisctp-linux-*) \
+./jniwrapper/native/src/main/resources/lib/linux/libjnisctp.so
 mvn package
 sudo cp ./jniwrapper/native/target/jniwrapper-native-1.0-SNAPSHOT.jar \
  $(ls /usr/share/jitsi-videobridge/lib/jniwrapper-native-*)
 ```
 
 **7. Solucionar errores de certificado de Jicofo y Videobridge contra Prosody**
+
+*Pasar de largo en Raspberry Pi con Ubuntu 20.04* 
 
 Este paso es un workaroud hasta que encuentre la forma correcta de instalar el certificado en Prosody, la falla se detecta cuando aparecen errores `PKIX path building failed` en los logs de Jicofo y Videobridge o más fácil cuando intentan sumar un 3er participante al meet les apaga el audio y video a los restantes. Para eso tenemos que editar /etc/jitsi/jicofo/sip-communicator.properties y agregar `org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true`
 
@@ -105,5 +118,3 @@ Acá les dejo los sitios de los cuales fui sacando información que luego se tra
 *Instalar Jitsi en plataformas arm https://github.com/jitsi/jitsi-meet/issues/6449*
 
 *Errores de certificados de Prosody https://github.com/jitsi/jitsi-meet/issues/2117*
-
-
