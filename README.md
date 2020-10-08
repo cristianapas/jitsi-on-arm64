@@ -3,8 +3,7 @@ Después de haber probado instalar Jitsi-Meet en Ubuntu en una PC, decidí desem
 
 *Update* Agregué los cambios para instalar Jitsi-Meet en una Raspberry Pi4 usando Ubuntu Server 20.04
 
-**1. Deshabilitar zram**
-*Pasar de largo para Raspberry Pi*
+**1. Deshabilitar zram** *Pasar de largo para Raspberry Pi*
 
 Este primer paso se debe a que por default armbian arma una partición de swap utilizando zram, que obviamente consume memoria y le resta para utilizarla por la JavaVM
 
@@ -84,9 +83,7 @@ sudo cp ./jniwrapper/native/target/jniwrapper-native-1.0-SNAPSHOT.jar \
  $(ls /usr/share/jitsi-videobridge/lib/jniwrapper-native-*)
 ```
 
-**7. Solucionar errores de certificado de Jicofo y Videobridge contra Prosody**
-
-*Pasar de largo en Raspberry Pi con Ubuntu 20.04* 
+**7. Solucionar errores de certificado de Jicofo y Videobridge contra Prosody** *Pasar de largo en Raspberry Pi con Ubuntu 20.04* 
 
 Este paso es un workaroud hasta que encuentre la forma correcta de instalar el certificado en Prosody, la falla se detecta cuando aparecen errores `PKIX path building failed` en los logs de Jicofo y Videobridge o más fácil cuando intentan sumar un 3er participante al meet les apaga el audio y video a los restantes. Para eso tenemos que editar /etc/jitsi/jicofo/sip-communicator.properties y agregar `org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true`
 
