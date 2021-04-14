@@ -27,14 +27,14 @@ Después de luchar varias veces con el jre y jdk 11 que trae por default de armb
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 sudo apt update -y
-apt install adoptopenjdk-8-hotspot -y
+sudo apt install adoptopenjdk-8-hotspot -y
 echo "JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" | sudo tee -a /etc/profile
 source /etc/profile
 ```
 En el caso del Ubuntu 20.04 en RPi4 es mucho mas sencillo ya que trae en su repositorios varias versiones de JDK
 
 ```bash
-apt install openjdk-8-jdk-headless -y
+sudo apt install openjdk-8-jdk-headless -y
 echo "JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")" | sudo tee -a /etc/profile
 source /etc/profile
 ```
